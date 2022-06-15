@@ -1,9 +1,48 @@
-<%- include('partials/header') %>
+<%- include('partials/header_home') %>
 
-  <form  action="/" method="post">
-    <label for="cityInput">City: </label>
-    <input id="cityInput" type="text" name="cityName">
-    <button type="submit" name="button">Go</button>
-  </form>
-    
+<div class="col container">
+  <div class="row">
+    <span class="city"><%- weatherCity['city'] %></span>
+    <div>
+      <h1><%- weatherCity['temp'] %></h1>
+      <span>°C</span>
+    </div>
+    <h3>
+      <%- weatherCity['weather'][0]['description'] %> 
+      <img class="weather-icon" src="http://openweathermap.org/img/wn/<%- weatherCity['weather'][0]['icon'] %>@2x.png" alt="">
+    </h3>    
+  </div>
+
+  <div class="row">
+    <form  action="/" method="post">
+      <input id="dataInput" type="text" name="data" placeholder="" autocomplete="off">
+      <button type="submit" name="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+  </div>
+</div>
+
+  <script>    
+    var aviable=["City", "Latitude"];  
+    var counter=0;
+
+    setInterval(change, 1200); 
+
+    function change() {
+      document.getElementsByName('data')[0].placeholder=aviable[counter];
+      counter++;
+      if(counter >= 2) { counter = 0; }
+    }
+
+    window.onload = function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function showPosition(position) {
+          console.log("Latitude: " + position.coords.latitude +
+          "  Longitude: " + position.coords.longitude);
+        });
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
+
 <%- include('partials/footer') %>
